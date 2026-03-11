@@ -1,6 +1,9 @@
-# Stage 1: Build custom k6 binary with statsd extension
 # renovate: datasource=docker depName=grafana/xk6
 ARG XK6_VERSION=0.13.4
+# renovate: datasource=docker depName=alpine
+ARG ALPINE_VERSION=3.21
+
+# Stage 1: Build custom k6 binary with statsd extension
 FROM grafana/xk6:${XK6_VERSION} AS builder
 
 RUN xk6 build \
@@ -8,8 +11,6 @@ RUN xk6 build \
   --output /tmp/k6
 
 # Stage 2: Runtime image
-# renovate: datasource=docker depName=alpine
-ARG ALPINE_VERSION=3.21
 FROM alpine:${ALPINE_VERSION}
 
 RUN apk add --no-cache aws-cli ca-certificates bash
