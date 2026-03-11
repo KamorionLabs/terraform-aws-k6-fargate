@@ -1,0 +1,30 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor",
+    ":semanticCommits"
+  ],
+  "dependencyDashboardApproval": false,
+  "schedule": ["before 6am on Monday"],
+  "timezone": "Europe/Paris",
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    },
+    {
+      "description": "Group Docker base image updates",
+      "matchManagers": ["dockerfile"],
+      "groupName": "docker base images"
+    },
+    {
+      "description": "Auto-merge GitHub Actions patch updates",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
+    }
+  ]
+}

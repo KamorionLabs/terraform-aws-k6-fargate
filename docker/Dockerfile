@@ -1,12 +1,16 @@
 # Stage 1: Build custom k6 binary with statsd extension
-FROM grafana/xk6:latest AS builder
+# renovate: datasource=docker depName=grafana/xk6
+ARG XK6_VERSION=0.13.4
+FROM grafana/xk6:${XK6_VERSION} AS builder
 
 RUN xk6 build \
   --with github.com/LeonAdato/xk6-output-statsd \
   --output /tmp/k6
 
 # Stage 2: Runtime image
-FROM alpine:3.19
+# renovate: datasource=docker depName=alpine
+ARG ALPINE_VERSION=3.21
+FROM alpine:${ALPINE_VERSION}
 
 RUN apk add --no-cache aws-cli ca-certificates bash
 
