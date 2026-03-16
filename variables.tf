@@ -119,3 +119,41 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+# -----------------------------------------------------------------------------
+# Optional Variables - Dashboard
+# -----------------------------------------------------------------------------
+
+variable "enable_dashboard" {
+  description = "Enable the CloudWatch dashboard sub-module"
+  type        = bool
+  default     = false
+}
+
+variable "dashboard_period" {
+  description = "Default period in seconds for dashboard widgets"
+  type        = number
+  default     = 60
+}
+
+variable "metric_prefix" {
+  description = "Prefix for k6 metric names in CloudWatch (matches K6_STATSD_NAMESPACE)"
+  type        = string
+  default     = "k6."
+}
+
+# -----------------------------------------------------------------------------
+# Optional Variables - Grafana Cloud
+# -----------------------------------------------------------------------------
+
+variable "enable_grafana_cloud" {
+  description = "Enable Grafana Cloud output for k6 (streams results via --out cloud)"
+  type        = bool
+  default     = false
+}
+
+variable "grafana_cloud_token_secret_arn" {
+  description = "Secrets Manager ARN containing the Grafana Cloud token. Required when enable_grafana_cloud is true."
+  type        = string
+  default     = null
+}

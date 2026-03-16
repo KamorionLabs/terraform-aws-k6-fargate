@@ -19,6 +19,13 @@ locals {
   extra_env_list = [for k, v in var.extra_env_vars : { name = k, value = v }]
   k6_env_vars    = concat(local.base_env_vars, local.extra_env_list)
 
+  grafana_cloud_secrets = var.enable_grafana_cloud ? [
+    {
+      name      = "K6_CLOUD_TOKEN"
+      valueFrom = var.grafana_cloud_token_secret_arn
+    }
+  ] : []
+
   container_definitions = [
     {
       name      = "k6"
@@ -33,6 +40,7 @@ locals {
       ]
 
       environment = local.k6_env_vars
+      secrets     = local.grafana_cloud_secrets
 
       logConfiguration = {
         logDriver = "awslogs"
@@ -96,4 +104,21 @@ resource "aws_ecs_task_definition" "k6" {
   container_definitions = jsonencode(local.container_definitions)
 
   tags = var.tags
+}
+
+# -----------------------------------------------------------------------------
+# Dashboard Sub-module
+# -----------------------------------------------------------------------------
+
+module "dashboard" {
+  count  = var.enable_dashboard ? 1 : 0
+  source = "./modules/dashboard"
+
+  name                 = var.name
+  cloudwatch_namespace = local.cloudwatch_namespace
+  region               = data.aws_region.current.id
+  period               = var.dashboard_period
+  metric_prefix        = var.metric_prefix
+  log_group_name       = aws_cloudwatch_log_group.k6.name
+  tags                 = var.tags
 }

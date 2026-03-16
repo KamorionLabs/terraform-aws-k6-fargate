@@ -60,3 +60,17 @@ output "run_task_command" {
       --overrides '{"containerOverrides":[{"name":"k6","environment":[{"name":"K6_SCRIPT","value":"YOUR_SCRIPT.js"},{"name":"K6_VUS","value":"10"},{"name":"K6_DURATION","value":"30s"}]}]}'
   EOT
 }
+
+# -----------------------------------------------------------------------------
+# Dashboard Outputs
+# -----------------------------------------------------------------------------
+
+output "dashboard_name" {
+  description = "Name of the CloudWatch dashboard (null if dashboard not enabled)"
+  value       = var.enable_dashboard ? module.dashboard[0].dashboard_name : null
+}
+
+output "dashboard_arn" {
+  description = "ARN of the CloudWatch dashboard (null if dashboard not enabled)"
+  value       = var.enable_dashboard ? module.dashboard[0].dashboard_arn : null
+}

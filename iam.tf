@@ -37,6 +37,25 @@ resource "aws_iam_role_policy" "execution_ssm" {
 }
 
 # -----------------------------------------------------------------------------
+# Execution Role - Grafana Cloud Secret Access (conditional)
+# -----------------------------------------------------------------------------
+
+resource "aws_iam_role_policy" "execution_secrets" {
+  count = var.enable_grafana_cloud ? 1 : 0
+  name  = "${var.name}-k6-execution-secrets"
+  role  = aws_iam_role.execution.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect   = "Allow"
+      Action   = ["secretsmanager:GetSecretValue"]
+      Resource = [var.grafana_cloud_token_secret_arn]
+    }]
+  })
+}
+
+# -----------------------------------------------------------------------------
 # Task Role - Used by containers at runtime for S3, CW
 # -----------------------------------------------------------------------------
 

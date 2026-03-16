@@ -1,0 +1,142 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 6,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}vus", { "stat": "Maximum" }]
+        ],
+        "view": "singleValue",
+        "region": "${region}",
+        "period": ${period},
+        "title": "Virtual Users",
+        "sparkline": true
+      }
+    },
+    {
+      "type": "metric",
+      "x": 6,
+      "y": 0,
+      "width": 6,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}iterations", { "stat": "Sum" }]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${region}",
+        "period": ${period},
+        "title": "Iterations / period",
+        "yAxis": {
+          "left": { "min": 0, "label": "count" }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 0,
+      "width": 6,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}http_reqs", { "stat": "Sum" }]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${region}",
+        "period": ${period},
+        "title": "HTTP Requests / period",
+        "yAxis": {
+          "left": { "min": 0, "label": "count" }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 18,
+      "y": 0,
+      "width": 6,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}http_req_failed", { "stat": "Average" }]
+        ],
+        "view": "singleValue",
+        "region": "${region}",
+        "period": ${period},
+        "title": "Error Rate",
+        "sparkline": true
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 6,
+      "width": 24,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}http_req_duration", { "id": "m1", "stat": "p50", "label": "p50", "color": "#2ca02c" }],
+          ["...", { "id": "m2", "stat": "p90", "label": "p90", "color": "#1f77b4" }],
+          ["...", { "id": "m3", "stat": "p95", "label": "p95", "color": "#ff7f0e" }],
+          ["...", { "id": "m4", "stat": "p99", "label": "p99", "color": "#d62728" }]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${region}",
+        "period": ${period},
+        "title": "HTTP Request Duration (Percentiles)",
+        "yAxis": {
+          "left": { "min": 0, "label": "ms" }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 12,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}http_req_failed", { "stat": "Average" }]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "${region}",
+        "period": ${period},
+        "title": "Error Rate Over Time",
+        "yAxis": {
+          "left": { "min": 0, "max": 1, "label": "rate" }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 12,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          ["${namespace}", "${metric_prefix}data_sent", { "stat": "Sum", "label": "Data Sent" }],
+          ["${namespace}", "${metric_prefix}data_received", { "stat": "Sum", "label": "Data Received" }]
+        ],
+        "view": "timeSeries",
+        "stacked": true,
+        "region": "${region}",
+        "period": ${period},
+        "title": "Data Transfer",
+        "yAxis": {
+          "left": { "min": 0, "label": "bytes" }
+        }
+      }
+    }
+  ]
+}
